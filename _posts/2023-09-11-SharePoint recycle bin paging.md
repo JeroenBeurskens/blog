@@ -8,7 +8,7 @@ SharePoint recycle bin paging
 <p>
 I was trying to create a backend function to scan sites for specific items. It seems there is no real way to query a recycle bin without loading everything in and looping trough the Recyclebin items.
 While this is enough in most scenarios it can cause a problem with recyclebins with many items. A partial solution to this is to use paging. The RecycleBinQueryInformation class does have a PagingInfo property, but there is no documentation on it.
-I eventually figured out how it works. 
+I eventually figured out how it works. Tested on on-prem 2019, but should work for other versions as well.
 </p>
 <p>
   The C# code below uses CSOM to iterate trough pages of the recycle bin. This makes it possible to scan trough results and find what you are looking for without pulling in everything at once.
