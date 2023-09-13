@@ -11,7 +11,7 @@ While this is enough in most scenarios it can cause a problem with recyclebins w
 I eventually figured out how it works. 
 </p>
 <p>
-  The C# code below iterates trough pages of the recycle bin. This makes it possible to scan trough results and find what you are looking for without pulling in everything at once.
+  The C# code below uses CSOM to iterate trough pages of the recycle bin. This makes it possible to scan trough results and find what you are looking for without pulling in everything at once.
 </p>
 {% highlight ruby %}
 {% raw %}
@@ -35,6 +35,9 @@ using (var currentContext = AppContext.CreateContext(Uri))
               recycleBinQuery.OrderBy = RecycleBinOrderBy.DeletedDate;
               recycleBinQuery.IsAscending = false;
               recycleBinQuery.RowLimit = recycleBinQueryPageSize;
+
+              // PagingInfo is where the magic happens. Completely undocumented unfortunately.
+              // Pass an empty tring for the first page. After we receive the first page the PagingInfo for the next page will be derived from the results.
               recycleBinQuery.PagingInfo = nextPageInfo;
               
               RecycleBinItemCollection deletedItems = siteContext.Web.GetRecycleBinItemsByQueryInfo(recycleBinQuery);  
@@ -57,6 +60,9 @@ using (var currentContext = AppContext.CreateContext(Uri))
               // Found a full page. Prepare paginginfo for the next page
               if (deletedItems.Count >= recycleBinQueryPageSize)
               {
+              // pageinfo format. Contains data from the last item on the page that is currently loaded.
+              // This will be used as a starting point for the next page.
+              // A similar url can be seen in the browser (F12) network traffic when browsing a large recyclebin using the SharePoint UI.
                   nextPageInfo = $"id={deletedItems.Last().Id}&title={deletedItems.Last().Title}&searchValue={deletedItems.Last().DeletedDate.ToString("s")}";
                   lastId = deletedItems.Last().Id;
               }
