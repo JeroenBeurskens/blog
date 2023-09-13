@@ -1,1 +1,2 @@
 theme: minima
+render_with_liquid: false
