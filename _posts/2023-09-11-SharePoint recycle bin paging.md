@@ -15,10 +15,6 @@ I eventually figured out how it works. Tested on on-prem 2019, but should work f
 </p>
 {% highlight ruby %}
 {% raw %}
-using (var currentContext = AppContext.CreateContext(Uri))
-{  
-      currentContext.Load(currentContext.Site.RootWeb, w => w.Url);
-      currentContext.ExecuteQueryRetry();
       using (var siteContext = new ClientContext("https://YourSite"))      
       {
           Guid lastId = Guid.Empty;
@@ -72,6 +68,5 @@ using (var currentContext = AppContext.CreateContext(Uri))
               }
           }
       }
-  }
   {% endraw %}
   {% endhighlight %}
