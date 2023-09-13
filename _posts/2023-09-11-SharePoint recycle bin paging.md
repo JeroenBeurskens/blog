@@ -14,6 +14,7 @@ I eventually figured out how it works.
   The C# code below iterates trough pages of the recycle bin. This makes it possible to scan trough results and find what you are looking for without pulling in everything at once.
 </p>
 <code>
+{% highlight ruby %}
 {% raw %}
 using (var currentContext = AppContext.CreateContext(Uri))
 {  
@@ -68,4 +69,5 @@ using (var currentContext = AppContext.CreateContext(Uri))
       }
   }
   {% endraw %}
+  {% endhighlight %}
 </code>
